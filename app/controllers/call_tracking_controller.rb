@@ -22,6 +22,7 @@ class CallTrackingController < ApplicationController
       phone_number: params[:Caller],
       city: params[:FromCity],
       state: params[:FromState],
+      customer_number: params[:From]
     }
   end
 
