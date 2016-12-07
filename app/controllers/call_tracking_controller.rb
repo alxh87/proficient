@@ -26,7 +26,7 @@ class CallTrackingController < ApplicationController
   end
 
   def lead_source
-    incoming_number = GlobalPhone.parse(params[:Called]).national_format
+    incoming_number = GlobalPhone.parse(params[:Called]).country_code+GlobalPhone.parse(params[:Called]).national_string
     LeadSource.find_by_incoming_number(incoming_number)
   end
 end

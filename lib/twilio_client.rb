@@ -15,9 +15,9 @@ class TwilioClient
     @client = Twilio::REST::Client.new account_sid, auth_token
   end
 
-  def available_phone_numbers(area_code = '415')
+  def available_phone_numbers(area_code = '612')
     client.available_phone_numbers.
-      get('US').local.list(area_code: area_code).take(10)
+      get('AU').local.list(contains: area_code).take(10)
   end
 
   def purchase_phone_number(phone_number)
