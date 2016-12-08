@@ -31,7 +31,8 @@
 
 
 <h1>Listing Support Numbers</h1>
-
+<%= form_tag("/callforward/set_active_number", method: "post") do %>
+<tbody>
 <table>
   <thead>
     <tr>
@@ -40,20 +41,20 @@
       <th colspan="3"></th>
     </tr>
   </thead>
-
-  <tbody>
-    <% @support_numbers.each do |support_number| %>
+  
+    <% @support_numbers.each_with_index do |support_number, i| %>
       <tr>
         <td><%= support_number.name %></td>
         <td><%= support_number.number %></td>
-        <td><%= link_to 'Show', support_number %></td>
         <td><%= link_to 'Edit', edit_support_number_path(support_number) %></td>
-        <td><%= link_to 'Destroy', support_number, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <td><%= link_to 'Delete', support_number, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <td><%= radio_button_tag(:support_index, i) %></td>
       </tr>
     <% end %>
   </tbody>
 </table>
-
+<input type="submit" value="Select active number" />
+<% end %>
 <br>
 
 <%= link_to 'New Support number', new_support_number_path %>
@@ -61,7 +62,7 @@
 
 
 <h1>Listing Sales Numbers</h1>
-
+<%= form_tag("/callforward/set_active_number", method: "post") do %>
 <table>
   <thead>
     <tr>
@@ -72,18 +73,19 @@
   </thead>
 
   <tbody>
-    <% @sales_numbers.each do |sales_number| %>
+    <% @sales_numbers.each_with_index do |sales_number, i| %>
       <tr>
         <td><%= sales_number.name %></td>
         <td><%= sales_number.number %></td>
-        <td><%= link_to 'Show', sales_number %></td>
         <td><%= link_to 'Edit', edit_sales_number_path(sales_number) %></td>
-        <td><%= link_to 'Destroy', sales_number, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <td><%= link_to 'Delete', sales_number, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <td><%= radio_button_tag(:sales_index, i) %></td>
       </tr>
     <% end %>
   </tbody>
 </table>
-
+<input type="submit" value="Select active number" />
+<% end %>
 <br>
 
 <%= link_to 'New Sales number', new_sales_number_path %>

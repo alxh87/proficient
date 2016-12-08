@@ -112,8 +112,7 @@ class TwilioController < ApplicationController
     render_twiml response
   end
 
-
-
+  private
 
   def current_support_number
   	ActiveNumber.find(1).number
@@ -125,11 +124,16 @@ class TwilioController < ApplicationController
 
 
   def support_number_list
-  	SupportNumber.all
+  	SupportNumber.order(:id)
   end
 
   def sales_number_list
-  	SaleNumber.all
+  	SaleNumber.order(:id)
+
+  end
+
+  def active_number_list
+    ActiveNumber.order(:id)
   end
 
   def verified_sender?(sender)

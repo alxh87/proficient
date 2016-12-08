@@ -25,12 +25,14 @@ Rails.application.routes.draw do
     resources :support_numbers
     resources :sales_numbers
   end
-  get 'callforward/index'
+  get 'twilio/index' => 'callforward#index', as: 'callforward_index'
   post 'twilio/voice_receive' => 'twilio#voice_receive'
   match 'twilio/voice_menu' => 'twilio#voice_menu', via: [:get, :post], as: 'voice_menu'
   match 'twilio/voice_change' => 'twilio#voice_change', via: [:get, :post], as: 'voice_change'
   match 'twilio/voice_change/support' => 'twilio#voice_change_support', via: [:get, :post], as: 'support_change'
   match 'twilio/voice_change/sales' => 'twilio#voice_change_sales', via: [:get, :post], as: 'sales_change'
+  post 'callforward/set_active_number' => 'callforward#set_active_number'
+  
 
   # Example resource route with options:
   #   resources :products do
