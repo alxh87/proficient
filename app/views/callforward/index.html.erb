@@ -1,0 +1,89 @@
+<h1>Callforward#index</h1>
+<p>Find me in app/views/callforward/index.html.erb</p>
+
+
+<p id="notice"><%= notice %></p>
+
+
+<h1>Listing Active Numbers</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Area</th>
+      <th>Name</th>
+      <th>Number</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @active_numbers.each do |active_number| %>
+      <tr>
+        <td><%= active_number.area.capitalize %></td>
+        <td><%= active_number.name %></td>
+        <td><%= active_number.number %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+
+
+<h1>Listing Support Numbers</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Number</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @support_numbers.each do |support_number| %>
+      <tr>
+        <td><%= support_number.name %></td>
+        <td><%= support_number.number %></td>
+        <td><%= link_to 'Show', support_number %></td>
+        <td><%= link_to 'Edit', edit_support_number_path(support_number) %></td>
+        <td><%= link_to 'Destroy', support_number, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Support number', new_support_number_path %>
+
+
+
+<h1>Listing Sales Numbers</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Number</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @sales_numbers.each do |sales_number| %>
+      <tr>
+        <td><%= sales_number.name %></td>
+        <td><%= sales_number.number %></td>
+        <td><%= link_to 'Show', sales_number %></td>
+        <td><%= link_to 'Edit', edit_sales_number_path(sales_number) %></td>
+        <td><%= link_to 'Destroy', sales_number, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Sales number', new_sales_number_path %>

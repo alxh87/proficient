@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
@@ -18,6 +19,18 @@ Rails.application.routes.draw do
   #   resources :products
   resources :lead_sources, only: [:create, :edit, :update]
   resources :available_phone_numbers, only: [:index]
+
+
+  scope '/twilio' do
+    resources :support_numbers
+    resources :sales_numbers
+  end
+  get 'callforward/index'
+  post 'twilio/voice_receive' => 'twilio#voice_receive'
+  match 'twilio/voice_menu' => 'twilio#voice_menu', via: [:get, :post], as: 'voice_menu'
+  match 'twilio/voice_change' => 'twilio#voice_change', via: [:get, :post], as: 'voice_change'
+  match 'twilio/voice_change/support' => 'twilio#voice_change_support', via: [:get, :post], as: 'support_change'
+  match 'twilio/voice_change/sales' => 'twilio#voice_change_sales', via: [:get, :post], as: 'sales_change'
 
   # Example resource route with options:
   #   resources :products do
