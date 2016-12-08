@@ -20,7 +20,7 @@
   <tbody>
     <% @active_numbers.each do |active_number| %>
       <tr>
-        <td><%= active_number.area %></td>
+        <td><%= active_number.area.capitalize %></td>
         <td><%= active_number.name %></td>
         <td><%= active_number.number %></td>
       </tr>
