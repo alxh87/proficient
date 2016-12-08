@@ -1,6 +1,7 @@
 class CallforwardController < ApplicationController
   def index
-  	@sales = Sale.all
-  	@supports = Support.all
+  	@sales_numbers = SalesNumber.all
+  	@support_numbers = SupportNumber.all
+  	@active_numbers = ActiveNumber.all
   end
 end

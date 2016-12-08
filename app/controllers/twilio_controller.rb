@@ -135,11 +135,11 @@ class TwilioController < ApplicationController
 
 
   def support_number_list
-  	Support.all
+  	SupportNumber.all
   end
 
   def sales_number_list
-  	Sale.all
+  	SaleNumber.all
   end
 
   def verified_sender?(sender)
