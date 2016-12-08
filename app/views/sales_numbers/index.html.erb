@@ -1,0 +1,29 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Listing Sales Numbers</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Number</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @sales_numbers.each do |sales_number| %>
+      <tr>
+        <td><%= sales_number.name %></td>
+        <td><%= sales_number.number %></td>
+        <td><%= link_to 'Show', sales_number %></td>
+        <td><%= link_to 'Edit', edit_sales_number_path(sales_number) %></td>
+        <td><%= link_to 'Destroy', sales_number, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Sales number', new_sales_number_path %>

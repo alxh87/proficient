@@ -1,0 +1,2 @@
+module SalesNumbersHelper
+end
