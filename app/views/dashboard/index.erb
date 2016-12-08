@@ -55,6 +55,28 @@
         <canvas id="leads-by-city"></canvas>
       </div>
     </div>
+    <h2>Customer numbers</h2>
+    <% if @leads %>
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>Source</th>
+          <th>Customer Number</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @leads.each do |lead| %>
+        <tr>
+          <td><%= lead.lead_source.name %></td>
+          <td><%= lead.phone_number %></td>
+        </tr>
+        <% end %>
+      </tbody>
+    </table>
+    <% else %>
+      <p><b>Add a new number to populate this list</b></p>
+    <% end %>
   </div>
 </div>
 <%= javascript_include_tag "call_tracking" %>
