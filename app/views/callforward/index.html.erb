@@ -7,23 +7,22 @@
 
 <h1>Listing Active Numbers</h1>
 
-<table>
+<table class="table table-striped table-bordered">
   <thead>
     <tr>
       <th>Area</th>
       <th>Name</th>
       <th>Number</th>
-      <th colspan="3"></th>
     </tr>
   </thead>
 
   <tbody>
     <% @active_numbers.each do |active_number| %>
-      <tr>
-        <td><%= active_number.area.capitalize %></td>
-        <td><%= active_number.name %></td>
-        <td><%= active_number.number %></td>
-      </tr>
+    <tr>
+      <td><%= active_number.area.capitalize %></td>
+      <td><%= active_number.name %></td>
+      <td><%= active_number.number %></td>
+    </tr>
     <% end %>
   </tbody>
 </table>
@@ -31,30 +30,37 @@
 
 
 <h1>Listing Support Numbers</h1>
-<%= form_tag("/callforward/set_active_number", method: "post") do %>
-<tbody>
-<table>
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Number</th>
-      <th colspan="3"></th>
-    </tr>
-  </thead>
-  
-    <% @support_numbers.each_with_index do |support_number, i| %>
-      <tr>
-        <td><%= support_number.name %></td>
-        <td><%= support_number.number %></td>
-        <td><%= link_to 'Edit', edit_support_number_path(support_number) %></td>
-        <td><%= link_to 'Delete', support_number, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-        <td><%= radio_button_tag(:support_index, i) %></td>
-      </tr>
+<div class="container">
+  <div class="col-sm-6">
+
+    <%= form_tag("/callforward/set_active_number", method: "post") do %>
+    <tbody>
+      <table class="table table-hover table-striped">
+        <thead>
+          <tr>
+            <th class="col-sm-2">Name</th>
+            <th class="col-sm-6">Number</th>
+            <th class="col-sm-2"></th>
+            <th class="col-sm-2"></th>
+            <th class="col-sm-1"></th>
+          </tr>
+        </thead>
+        
+        <% @support_numbers.each_with_index do |support_number, i| %>
+        <tr>
+          <td><%= support_number.name %></td>
+          <td><%= support_number.number %></td>
+          <td><%= link_to 'Edit', edit_support_number_path(support_number) %></td>
+          <td><%= link_to 'Delete', support_number, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+          <td><%= radio_button_tag(:support_index, i) %></td>
+        </tr>
+        <% end %>
+      </tbody>
+    </table>
+    <input type="submit" value="Change Support Number" />
     <% end %>
-  </tbody>
-</table>
-<input type="submit" value="Select active number" />
-<% end %>
+  </div>
+</div>
 <br>
 
 <%= link_to 'New Support number', new_support_number_path %>
@@ -62,30 +68,36 @@
 
 
 <h1>Listing Sales Numbers</h1>
-<%= form_tag("/callforward/set_active_number", method: "post") do %>
-<table>
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Number</th>
-      <th colspan="3"></th>
-    </tr>
-  </thead>
+<div class="container">
+  <div class="col-sm-6">
+    <%= form_tag("/callforward/set_active_number", method: "post") do %>
+    <table class="table table-hover table-striped">
+      <thead>
+        <tr>
+          <th class="col-sm-2">Name</th>
+          <th class="col-sm-6">Number</th>
+          <th class="col-sm-2"></th>
+          <th class="col-sm-2"></th>
+          <th class="col-sm-1"></th>
+        </tr>
+      </thead>
 
-  <tbody>
-    <% @sales_numbers.each_with_index do |sales_number, i| %>
-      <tr>
-        <td><%= sales_number.name %></td>
-        <td><%= sales_number.number %></td>
-        <td><%= link_to 'Edit', edit_sales_number_path(sales_number) %></td>
-        <td><%= link_to 'Delete', sales_number, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-        <td><%= radio_button_tag(:sales_index, i) %></td>
-      </tr>
+      <tbody>
+        <% @sales_numbers.each_with_index do |sales_number, i| %>
+        <tr>
+          <td><%= sales_number.name %></td>
+          <td><%= sales_number.number %></td>
+          <td><%= link_to 'Edit', edit_sales_number_path(sales_number) %></td>
+          <td><%= link_to 'Delete', sales_number, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+          <td><%= radio_button_tag(:sales_index, i) %></td>
+        </tr>
+        <% end %>
+      </tbody>
+    </table>
+    <input type="submit" value="Change Sales Number" />
     <% end %>
-  </tbody>
-</table>
-<input type="submit" value="Select active number" />
-<% end %>
+  </div>
+</div>
 <br>
 
 <%= link_to 'New Sales number', new_sales_number_path %>
