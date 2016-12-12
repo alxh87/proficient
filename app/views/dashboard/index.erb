@@ -19,7 +19,6 @@
         <tr>
           <th>Name</th>
           <th>Incoming Number</th>
-          <th>Forwarding Number</th>
           <th></th>
         </tr>
       </thead>
@@ -28,7 +27,6 @@
         <tr>
           <td><%= lead_source.name %></td>
           <td><%= lead_source.incoming_number %></td>
-          <td><%= lead_source.forwarding_number %></td>
           <td><%= link_to 'Edit', edit_lead_source_path(lead_source), class: 'btn btn-default btn-xs' %></td>
         </tr>
         <% end %>

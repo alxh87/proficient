@@ -1,16 +1,17 @@
 Rails.application.routes.draw do
 
+  root 'welcome#index'
+
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
   # You can have the root of your site routed with "root"
-  root 'dashboard#index'
-
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'
 
   # Example of named route that can be invoked with purchase_url(id: product.id)
   #   get 'products/:id/purchase' => 'catalog#purchase', as: :purchase
+  get 'call-tracking/index' => 'dashboard#index', as: 'calltracking_index'
   post 'call-tracking/forward-call' => 'call_tracking#forward_call', as: :forward_call
   get 'statistics/leads_by_source' => 'statistics#leads_by_source', as: :leads_by_source
   get 'statistics/leads_by_city' => 'statistics#leads_by_city', as: :leads_by_city
