@@ -33,7 +33,9 @@
 	  <span class="navbar-text" style="float: right;">
 	      <div id="header">
 	        <% if signed_in? -%>
-	          <%= button_to t(".sign_out"), sign_out_path, method: :delete, class: "btn btn-primary", style: "margin-top: -10px;" %>
+	        <a class="navbar-brand" style="margin-right: 100px; margin-top: -10px">Signed in as: <%= current_user.email %></a>
+	        	
+	          <span><%= button_to t(".sign_out"), sign_out_path, method: :delete, class: "btn btn-primary", style: "margin-top: -50px; float: right;" %></span>
 	        <% else -%>
 	          <%= link_to t(".sign_in"), sign_in_path, class: "btn btn-primary", style: "margin-top: -10px;" %>
 	        <% end -%>
