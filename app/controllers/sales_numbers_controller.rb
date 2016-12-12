@@ -1,5 +1,6 @@
 class SalesNumbersController < ApplicationController
   before_action :set_sales_number, only: [:show, :edit, :update, :destroy]
+  before_action :require_login
 
   # GET /sales_numbers
   def index
@@ -42,7 +43,7 @@ class SalesNumbersController < ApplicationController
   # DELETE /sales_numbers/1
   def destroy
     @sales_number.destroy
-    redirect_to sales_numbers_url, notice: 'Sales number was successfully destroyed.'
+    redirect_to callforward_index_path, notice: 'Sales number was successfully destroyed.'
   end
 
   private

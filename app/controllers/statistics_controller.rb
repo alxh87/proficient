@@ -1,4 +1,6 @@
 class StatisticsController < ApplicationController
+  before_action :require_login
+  
   def leads_by_source
     lead_sources = LeadSource.count_leads
     render json: format_for_chart(lead_sources)

@@ -5,18 +5,51 @@
 <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
 <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
 <%= csrf_meta_tags %>
-
-
 </head>
+
 <body>
-<div class="container">
+
+
+	<nav class="navbar" style="background-color: #e3f2fd; height: 50px">
+	  <ul class="nav navbar-nav">  
+	  	<li class="nav-item">
+	  	  <a class="navbar-brand" style="background-color: white;" href="/">
+	  	    <img src="https://pbs.twimg.com/profile_images/530160069447401473/yo4T3ZHo_400x400.jpeg" width="60" height="60" alt="">
+	  	  </a>
+	  	</li>
+			<li class="nav-item">
+				 <a class="navbar-brand" style="background-color: white;" href="/">Proficient Removals</a>
+			</li>
+			<% if signed_in? -%>
+			
+			 		<li class="nav-item">
+				 		  <%= link_to "Forwarding Numbers", callforward_index_path %>
+				 		</li>
+			    <li class="nav-item float-xs-right">
+				      <%= link_to "Tracking", calltracking_index_path %>
+				   </li>
+			<% end -%>
+	  </ul>
+	  <span class="navbar-text" style="float: right;">
+	      <div id="header">
+	        <% if signed_in? -%>
+	          <%= button_to t(".sign_out"), sign_out_path, method: :delete, class: "btn btn-primary", style: "margin-top: -10px;" %>
+	        <% else -%>
+	          <%= link_to t(".sign_in"), sign_in_path, class: "btn btn-primary", style: "margin-top: -10px;" %>
+	        <% end -%>
+	      </div>
+	    </span>
+	</nav>
+
+
   <% if flash[:notice] %>
   <div class="alert alert-success alert-dismissible" role="alert">
     <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
     <%= flash[:notice] %>
   </div>
   <% end %>
-  <%= yield %>
-</div>
+  <div class="container">
+	  <%= yield %>
+	</div>
 </body>
 </html>

@@ -1,5 +1,6 @@
 class LeadSourcesController < ApplicationController
   before_filter :find_lead_source, only: [:edit, :update]
+  before_action :require_login
 
   def edit
   end

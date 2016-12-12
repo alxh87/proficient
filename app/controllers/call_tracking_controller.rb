@@ -1,5 +1,6 @@
 class CallTrackingController < ApplicationController
   skip_before_action :verify_authenticity_token
+  
 
   def forward_call
     lead = Lead.create(lead_params)

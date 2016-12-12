@@ -7,7 +7,7 @@ gem 'pg'
 
 gem 'figaro'
 gem 'byebug'
-
+gem 'clearance'
 
 gem 'puma'
 

@@ -1,9 +1,5 @@
-<h1>Welcome#index</h1>
-<p>Find me in app/views/welcome/index.html.erb</p>
 
+<%= link_to "Set up forwarding numbers", callforward_index_path, class: "btn btn-success btn-block", style: "height: 60px; font-size: 30px; margin-top: 50px" %>
+<br>
+<%= link_to "Set up tracked advertisement numbers", calltracking_index_path, class: "btn btn-primary btn-block", style: "height: 60px; font-size: 30px" %>
 
-<h3><%= link_to "Set up forwarding numbers for incoming sales and support calls", callforward_index_path %></h3>
-
-<%= link_to "Call tracking", calltracking_index_path %>
-
-<%= link_to "Call forwarding", callforward_index_path %>

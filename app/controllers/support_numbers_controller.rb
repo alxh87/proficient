@@ -1,6 +1,6 @@
 class SupportNumbersController < ApplicationController
   before_action :set_support_number, only: [:show, :edit, :update, :destroy]
-
+  before_action :require_login
   # GET /support_numbers
   def index
     @support_numbers = SupportNumber.all
@@ -42,7 +42,7 @@ class SupportNumbersController < ApplicationController
   # DELETE /support_numbers/1
   def destroy
     @support_number.destroy
-    redirect_to support_numbers_url, notice: 'Support number was successfully destroyed.'
+    redirect_to callforward_index_path, notice: 'Support number was successfully destroyed.'
   end
 
   private
