@@ -12,7 +12,7 @@ class CallTrackingController < ApplicationController
     phone_number = lead_source.forwarding_number
 
     Twilio::TwiML::Response.new do |r|
-      r.Dial phone_number
+      r.Dial current_sales_number
     end
   end
 
@@ -30,4 +30,11 @@ class CallTrackingController < ApplicationController
     incoming_number = GlobalPhone.parse(params[:Called]).country_code+GlobalPhone.parse(params[:Called]).national_string
     LeadSource.find_by_incoming_number(incoming_number)
   end
+
+  def current_sales_number
+    ActiveNumber.find(2).number
+  end
+
+
 end
+
