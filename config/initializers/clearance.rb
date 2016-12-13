@@ -6,7 +6,7 @@ Clearance.configure do |config|
   config.cookie_path = "/"
   config.routes = true
   config.httponly = false
-  config.mailer_sender = "reply@proficientremovals.com.au"
+  config.mailer_sender = "alxhdevelopment@gmail.com"
   config.password_strategy = Clearance::PasswordStrategies::BCrypt
   config.redirect_url = "/"
   config.secure_cookie = false
