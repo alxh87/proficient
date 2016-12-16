@@ -16,7 +16,7 @@ class TwilioController < ApplicationController
   end
 
   def voice_menu
-  	redirect '/receive_voice' unless ['1', '2', '3', '4','9'].include?(params['Digits'])
+  	redirect '/receive_voice' unless ['1', '2', '3', '4','8','9'].include?(params['Digits'])
   	if ['1', '2'].include?(params['Digits'])
   	  response = Twilio::TwiML::Response.new do |r|
   	    p "support"
@@ -32,6 +32,12 @@ class TwilioController < ApplicationController
   	    r.Dial current_sales_number
   	    r.Say "Sorry, your call could not be answered at this time. Please try again later."
   	  end
+    
+    elsif params['Digits'] == '8'
+      response = Twilio::TwiML::Response.new do |r|
+        p Time.now
+        r.Say "Sorry, your call could not be answered at this time. Please try again later."
+      end
 
   	elsif params['Digits'] == '9'
   	  if verified_sender?(params["From"])
@@ -140,6 +146,10 @@ class TwilioController < ApplicationController
     sender == '+61405454187' || sender == '+61407027118' || sender == '+61421792096'
     #0407027118 juarez
     #0421792096 jordan
+  end
+
+  def within_office_hours
+    (9..17).cover?(Time.now.hour)
   end
 
 
