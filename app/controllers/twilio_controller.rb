@@ -16,12 +16,12 @@ class TwilioController < ApplicationController
     elsif verified_sender?(params["From"])
       response = Twilio::TwiML::Response.new do |r|
         r.Gather :numDigits => '1', :action => voice_menu_path, :method => 'get' do |g|
-          g.Play 'https://www.dropbox.com/s/hkejhdt6jlvx87a/Twilio_Voice_Kanako_Long.mp3?dl=1'
+          r.Say "Sorry, our office hours are Monday to Friday, 9 A M to 5 P M. Please call back later."
         end
       end
     else
       response = Twilio::TwiML::Response.new do |r|
-        r.Say "Sorry, our office hours are Monday to Friday, 9 A M to 5 P M. Please try again later."
+        r.Say "Sorry, our office hours are Monday to Friday, 9 A M to 5 P M. Please call back later."
       end 
     end
     render_twiml response
