@@ -7,56 +7,42 @@ class TwilioController < ApplicationController
   skip_before_action :verify_authenticity_token
 
   def voice_receive
-  	response = Twilio::TwiML::Response.new do |r|
-  	  r.Gather :numDigits => '1', :action => voice_menu_path, :method => 'get' do |g|
-  	    g.Play 'https://www.dropbox.com/s/hkejhdt6jlvx87a/Twilio_Voice_Kanako_Long.mp3?dl=1'
-  	  end
-  	end
+  	if within_office_hours?
+      response = Twilio::TwiML::Response.new do |r|
+    	  r.Gather :numDigits => '1', :action => voice_menu_path, :method => 'get' do |g|
+    	    g.Play 'https://www.dropbox.com/s/hkejhdt6jlvx87a/Twilio_Voice_Kanako_Long.mp3?dl=1'
+    	  end
+    	end
+    elsif verified_sender?(params["From"])
+      response = Twilio::TwiML::Response.new do |r|
+        r.Gather :numDigits => '1', :action => voice_menu_path, :method => 'get' do |g|
+          r.Say "Sorry, our office hours are Monday to Friday, 9 A M to 5 P M. Please call back later."
+        end
+      end
+    else
+      response = Twilio::TwiML::Response.new do |r|
+        r.Say "Sorry, our office hours are Monday to Friday, 9 A M to 5 P M. Please call back later."
+      end 
+    end
     render_twiml response
   end
 
   def voice_menu
-  	redirect '/receive_voice' unless ['1', '2', '3', '4','8','9'].include?(params['Digits'])
+  	redirect '/receive_voice' unless ['1', '2', '3', '4','9'].include?(params['Digits'])
   	if ['1', '2'].include?(params['Digits'])
-      if within_office_hours?
-    	  response = Twilio::TwiML::Response.new do |r|
-          p "support"
-    	    p current_support_number
-          r.Say "Connecting you now. Office hours are Monday to Friday, 9 A M to 5 P M"
-    	    r.Dial current_support_number unless current_support_number == ""
-    	    r.Say "Sorry, your call could not be answered at this time. Please try again later."
-    	  end
-      else
-        response = Twilio::TwiML::Response.new do |r|
-          r.Say "Sorry, office hours are Monday to Friday, 9 A M to 5 P M. Please try again later."
-        end
-      end
-
-
-    elsif ['3', '4'].include?(params['Digits'])
-  	  if within_office_hours?
-        response = Twilio::TwiML::Response.new do |r|
-          p "Sales"
-    	    p current_sales_number
-          r.Say "Connecting you now. Office hours are Monday to Friday, 9 A M to 5 P M"
-    	    r.Dial current_sales_number
-    	    r.Say "Sorry, your call could not be answered at this time. Please try again later."
-    	  end
-      else
-        response = Twilio::TwiML::Response.new do |r|
-          r.Say "Sorry, office hours are Monday to Friday, 9 A M to 5 P M. Please try again later."
-        end
-      end
-    
-    
-
-    elsif params['Digits'] == '8'
-      response = Twilio::TwiML::Response.new do |r|
-        p Time.now
-        r.Say "The current time is" + Time.now.to_s
-        r.Say "Sorry, office hours are Monday to Friday, 9 A M to 5 P M. Please try again later."
-        r.Say "Sorry, your call could not be answered at this time. Please try again later."
-      end
+  	  response = Twilio::TwiML::Response.new do |r|
+  	    p "support"
+  	    p current_support_number
+  	    r.Dial current_support_number unless current_support_number == ""
+  	    r.Say "Sorry, your call could not be answered at this time. Please try again later."
+  	  end
+  	elsif ['3', '4'].include?(params['Digits'])
+  	  response = Twilio::TwiML::Response.new do |r|
+  	    p "Sales"
+  	    p current_sales_number
+  	    r.Dial current_sales_number
+  	    r.Say "Sorry, your call could not be answered at this time. Please try again later."
+  	  end
 
   	elsif params['Digits'] == '9'
   	  if verified_sender?(params["From"])
@@ -162,13 +148,17 @@ class TwilioController < ApplicationController
   end
 
   def verified_sender?(sender)
-    sender == '+61405454187' || sender == '+61407027118' || sender == '+61421792096'
+    nums=SupportNumber.pluck(:number)|SalesNumber.pluck(:number)
+    nums<<'+61405454187'
+    nums<<'+61407027118'
+    nums<<'+61421792096'
+    nums.include?(sender)
     #0407027118 juarez
     #0421792096 jordan
   end
 
   def within_office_hours?
-    (9..17).cover?(Time.now.hour)
+    (1..5).cover?(Time.now.wday)&(9..16).cover?(Time.now.hour)   #monday(1)-friday(5) AND 9:00-16:59
   end
 
 
