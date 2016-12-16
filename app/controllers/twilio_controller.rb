@@ -53,6 +53,7 @@ class TwilioController < ApplicationController
     elsif params['Digits'] == '8'
       response = Twilio::TwiML::Response.new do |r|
         p Time.now
+        r.Say "The current time is" + Time.now.to_s
         r.Say "Sorry, office hours are Monday to Friday, 9 A M to 5 P M. Please try again later."
         r.Say "Sorry, your call could not be answered at this time. Please try again later."
       end
