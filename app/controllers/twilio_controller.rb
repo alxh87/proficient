@@ -21,14 +21,19 @@ class TwilioController < ApplicationController
       end
     else
       response = Twilio::TwiML::Response.new do |r|
-        r.Say "Sorry, our office hours are Monday to Friday, 9 A M to 5 P M. Please call back later."
+        if endtime.to_i > 12
+          r.Say "Sorry, our office hours are Monday to Friday, #{starttime} A M to #{(endtime.to_i - 12).to_s} P M.... Please leave a message."
+        else
+          r.Say "Sorry, our office hours are Monday to Friday, #{starttime} A M to #{endtime} P M.... Please leave a message."
+        end
+        r.Record maxLength: '20', transcribe: true, transcribeCallback: "http://twimlets.com/voicemail?Email=alxh87@gmail.com"      
       end 
     end
     render_twiml response
   end
 
   def voice_menu
-  	redirect '/receive_voice' unless ['1', '2', '3', '4','9'].include?(params['Digits'])
+  	redirect_to '/receive_voice' unless ['1', '2', '3', '4','9'].include?(params['Digits'])
   	if ['1', '2'].include?(params['Digits'])
   	  response = Twilio::TwiML::Response.new do |r|
   	    p "support"
@@ -68,7 +73,7 @@ class TwilioController < ApplicationController
 
 
   def voice_change
-  	redirect '/voice_receive' unless ['1', '2'].include?(params['Digits'])
+  	redirect_to '/voice_receive' unless ['1', '2'].include?(params['Digits'])
   	if params['Digits'] == '1'
   	  response = Twilio::TwiML::Response.new do |r|
   	    r.Gather :numDigits => '1', :action => support_change_path, :method => 'post' do |g|
@@ -157,8 +162,25 @@ class TwilioController < ApplicationController
     #0421792096 jordan
   end
 
+  def startday
+    ActiveNumber.find(3).number
+  end
+
+  def endday
+    ActiveNumber.find(4).number
+  end
+
+  def starttime
+    ActiveNumber.find(5).number
+  end
+
+  def endtime
+    ActiveNumber.find(6).number
+  end
+
+
   def within_office_hours?
-    (1..5).cover?(Time.now.wday)&(9..16).cover?(Time.now.hour)   #monday(1)-friday(5) AND 9:00-16:59
+    (startday.to_i..endday.to_i).cover?(Time.now.wday)&(starttime.to_i..endtime.to_i).cover?(Time.now.hour)   #monday(1)-friday(5) AND 9:00-16:59
   end
 
 
