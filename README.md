@@ -1,8 +1,4 @@
 
-# Call Tracking on Rails
-[Read the full tutorial here](https://www.twilio.com/docs/tutorials/walkthrough/call-tracking/ruby/rails)!
-
-
 == README
 
 This README would normally document whatever steps are necessary to get the
