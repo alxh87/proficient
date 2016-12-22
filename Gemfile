@@ -11,6 +11,7 @@ gem 'clearance'
 
 gem 'puma'
 gem 'sidekiq'
+gem 'seed_dump'
 
 # Gems used only for assets and not required
 # in production environments by default.
