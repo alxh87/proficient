@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
 
+  get 'office_hours/index'
+
   root 'welcome#index'
 
   # The priority is based upon order of creation: first created -> highest priority.
@@ -34,6 +36,7 @@ Rails.application.routes.draw do
   match 'twilio/voice_change/support' => 'twilio#voice_change_support', via: [:get, :post], as: 'support_change'
   match 'twilio/voice_change/sales' => 'twilio#voice_change_sales', via: [:get, :post], as: 'sales_change'
   post 'callforward/set_active_number' => 'callforward#set_active_number'
+  post 'office_hours/set_office_hours' => 'office_hours#set_office_hours'
   
 
   # Example resource route with options:

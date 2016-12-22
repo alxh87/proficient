@@ -1,0 +1,19 @@
+<h1>Office Hours Settings</h1>
+
+<p>This is used to configure the times that customer calls are forwarded to the office. Outside of these hours, customers will able to leave a voicemail.</p>
+
+
+<%= form_tag("/office_hours/set_office_hours", method: "post") do %>
+	<h3>Start day</h3>
+	<%= select_tag(:startday, options_for_select([['Sunday', 0], ['Monday', 1], ['Tuesday', 2], ['Wednesday', 3], ['Thursday', 4], ['Friday', 5], ['Saturday', 6]], @startday)) %>
+	<h3>End day</h3>
+	<%= select_tag(:endday, options_for_select([['Sunday', 0], ['Monday', 1], ['Tuesday', 2], ['Wednesday', 3], ['Thursday', 4], ['Friday', 5], ['Saturday', 6]], @endday)) %>
+	<h3>Opening time</h3>
+	<%= select_tag(:starttime, options_for_select((6..22), @starttime)) %>
+	<h3>Closing time</h3>
+	<%= select_tag(:endtime, options_for_select((6..22), @endtime)) %>
+sdaf
+	<input type="submit" value="Change Office Hours" class="btn btn-success"/>
+<% end %>
+
+
