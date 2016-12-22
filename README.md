@@ -1,3 +1,8 @@
+
+# Call Tracking on Rails
+[Read the full tutorial here](https://www.twilio.com/docs/tutorials/walkthrough/call-tracking/ruby/rails)!
+
+
 == README
 
 This README would normally document whatever steps are necessary to get the
@@ -31,3 +36,4 @@ Please feel free to use a different markup language if you do not plan to run
 
 WHEN DEPLOYING TO HEROKU:
 https://www.youtube.com/watch?v=zJYuLebl-Js (3:18) see this to make changes
+
