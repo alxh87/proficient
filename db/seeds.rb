@@ -3,17 +3,15 @@ User.create!([
 ])
 ActiveNumber.create!([
   {area: "sales", name: "Juarez", number: "+61407027111"},
-  {area: "support", name: "Alex", number: "+61405454187"},
-  {area: "officehours", name: "startday", number: "2"},
-  {area: "officehours", name: "endday", number: "4"},
-  {area: "officehours", name: "starttime", number: "10"},
-  {area: "officehours", name: "endtime", number: "13"}
+  {area: "support", name: "Juarez", number: "+61407027118"},
+  {area: "officehours", name: "startday", number: "1"},
+  {area: "officehours", name: "endday", number: "5"},
+  {area: "officehours", name: "starttime", number: "09"},
+  {area: "officehours", name: "endtime", number: "18"}
 ])
 SalesNumber.create!([
-  {name: "Juarez", number: "+61407027111"},
-  {name: "Juarez", number: "+61407027112"}
+  {name: "Juarez", number: "+61407027118"}
 ])
 SupportNumber.create!([
-  {name: "Alex", number: "+61405454187"},
-  {name: "Alex", number: "+61405454181"}
+  {name: "Juarez", number: "+61407027118"}
 ])
