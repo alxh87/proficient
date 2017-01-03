@@ -42,7 +42,7 @@ class SupportNumbersController < ApplicationController
   # DELETE /support_numbers/1
   def destroy
     @support_number.destroy
-    redirect_to callforward_index_path, notice: 'Support number was successfully destroyed.'
+    redirect_to callforward_index_path, notice: 'Support number was successfully deleted.'
   end
 
   private
