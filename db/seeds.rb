@@ -11,6 +11,6 @@ SupportNumber.create!([
 OfficeHour.create!([
   {name: "startday", number: "1"},
   {name: "endday", number: "5"},
-  {name: "starttime", number: "09"},
+  {name: "starttime", number: "9"},
   {name: "endtime", number: "18"}
 ])
