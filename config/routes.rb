@@ -30,7 +30,7 @@ Rails.application.routes.draw do
   end
   
   get 'twilio/index' => 'callforward#index', as: 'callforward_index'
-  post 'twilio/voice_receive' => 'twilio#voice_receive'
+  get 'twilio/voice_receive' => 'twilio#voice_receive'
   match 'twilio/voice_menu' => 'twilio#voice_menu', via: [:get, :post], as: 'voice_menu'
   match 'twilio/voice_change' => 'twilio#voice_change', via: [:get, :post], as: 'voice_change'
   match 'twilio/voice_change/support' => 'twilio#voice_change_support', via: [:get, :post], as: 'support_change'

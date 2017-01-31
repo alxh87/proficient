@@ -33,7 +33,7 @@ class TwilioController < ApplicationController
   end
 
   def voice_menu
-  	redirect_to '/receive_voice' unless ['1', '2', '9'].include?(params['Digits'])
+  	redirect_to 'twilio/voice_receive' unless ['1', '2', '9'].include?(params['Digits'])
   	if ['2'].include?(params['Digits'])
   	  response = Twilio::TwiML::Response.new do |r|
   	    p "support"
@@ -73,7 +73,7 @@ class TwilioController < ApplicationController
 
 
   def voice_change
-  	redirect_to '/voice_receive' unless ['1', '2'].include?(params['Digits'])
+  	redirect_to 'twilio/voice_receive' unless ['1', '2'].include?(params['Digits'])
   	if params['Digits'] == '1'
   	  response = Twilio::TwiML::Response.new do |r|
   	    r.Gather :numDigits => '1', :action => support_change_path, :method => 'post' do |g|
