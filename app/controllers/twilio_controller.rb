@@ -10,13 +10,13 @@ class TwilioController < ApplicationController
   	if within_office_hours?
       response = Twilio::TwiML::Response.new do |r|
     	  r.Gather :numDigits => '1', :action => voice_menu_path, :method => 'get' do |g|
-    	    g.Play 'https://www.dropbox.com/s/hkejhdt6jlvx87a/Twilio_Voice_Kanako_Long.mp3?dl=1'
+    	    g.Play 'https://www.dropbox.com/s/cc4xdm963tgxu85/Proficient_voice_vinoo.mp3?dl=1'
     	  end
     	end
     elsif verified_sender?(params["From"])
       response = Twilio::TwiML::Response.new do |r|
         r.Gather :numDigits => '1', :action => voice_menu_path, :method => 'get' do |g|
-          r.Say "Sorry, our office hours are Monday to Friday, 9 A M to 5 P M. Please call back later."
+          r.Say "Sorry, our office hours are Monday to Friday, 9 A M to 5 P M. Please call back later or press 9 to change active numbers."
         end
       end
     else
@@ -33,15 +33,15 @@ class TwilioController < ApplicationController
   end
 
   def voice_menu
-  	redirect_to '/receive_voice' unless ['1', '2', '3', '4','9'].include?(params['Digits'])
-  	if ['1', '2'].include?(params['Digits'])
+  	redirect_to '/receive_voice' unless ['1', '2', '9'].include?(params['Digits'])
+  	if ['2'].include?(params['Digits'])
   	  response = Twilio::TwiML::Response.new do |r|
   	    p "support"
   	    p current_support_number
   	    r.Dial current_support_number unless current_support_number == ""
   	    r.Say "Sorry, your call could not be answered at this time. Please try again later."
   	  end
-  	elsif ['3', '4'].include?(params['Digits'])
+  	elsif ['1'].include?(params['Digits'])
   	  response = Twilio::TwiML::Response.new do |r|
   	    p "Sales"
   	    p current_sales_number
