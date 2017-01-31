@@ -2,6 +2,12 @@
 
 <p id="notice"><%= notice %></p>
 
+<% @workers.each do |worker| %>
+    <%=  worker[0][:name] %>
+    <%= worker[0][:number] %>
+    <%= worker[0][:area] %>
+        <br>
+<%end %>
 
 <h2>Active Numbers</h2>
 <div class="container">

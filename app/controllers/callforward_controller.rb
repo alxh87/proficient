@@ -8,6 +8,13 @@ class CallforwardController < ApplicationController
   	@active_numbers = active_number_list
     @current_support_number = current_support_number
     @current_sales_number = current_sales_number
+    wsclient = client
+
+    @workers=[]
+    wsclient.workspace.workers.list.each do |client|
+      ws_json = JSON.parse(client.attributes)
+      @workers << [:name => client.friendly_name, :number => ws_json["contact_uri"], :area => ws_json["area"]]
+    end
   end
 
   def set_active_number
@@ -43,5 +50,12 @@ class CallforwardController < ApplicationController
     ActiveNumber.find(2).number
   end
 
+  def client
+    Twilio::REST::TaskRouterClient.new(
+      ENV['TWILIO_ACCOUNT_SID'],
+      ENV['TWILIO_AUTH_TOKEN'],
+      ENV['TWILIO_WS_SID']
+    )
+  end
 
 end

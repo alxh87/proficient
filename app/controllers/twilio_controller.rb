@@ -7,7 +7,7 @@ class TwilioController < ApplicationController
   skip_before_action :verify_authenticity_token
 
   def voice_receive
-  	if within_office_hours?
+  	
       response = Twilio::TwiML::Response.new do |r|
     	  r.Gather :numDigits => '1', :action => voice_menu_path, :method => 'get' do |g|
     	    g.Play 'https://www.dropbox.com/s/cc4xdm963tgxu85/Proficient_voice_vinoo.mp3?dl=1'
@@ -16,7 +16,7 @@ class TwilioController < ApplicationController
     elsif verified_sender?(params["From"])
       response = Twilio::TwiML::Response.new do |r|
         r.Gather :numDigits => '1', :action => voice_menu_path, :method => 'get' do |g|
-          r.Say "Sorry, our office hours are Monday to Friday, 9 A M to 5 P M. Please call back later or press 9 to change active numbers."
+          r.Say "Sorry, our office hours are Monday to Friday, 9 A M to 5 P M."
         end
       end
     else
@@ -28,34 +28,34 @@ class TwilioController < ApplicationController
         end
         r.Record maxLength: '20', transcribe: true, transcribeCallback: "http://twimlets.com/voicemail?Email=alxh87@gmail.com"      
       end 
-    end
+
     render_twiml response
   end
 
   def voice_menu
-  	redirect_to '/receive_voice' unless ['1', '2', '9'].include?(params['Digits'])
-  	if ['2'].include?(params['Digits'])
+  	redirect_to 'twilio/voice_receive' unless ['1', '2'].include?(params['Digits'])
+    digits = params[:Digits]
+  	if digits == '2'
+      area = "Operations"
   	  response = Twilio::TwiML::Response.new do |r|
-  	    p "support"
-  	    p current_support_number
-  	    r.Dial current_support_number unless current_support_number == ""
-  	    r.Say "Sorry, your call could not be answered at this time. Please try again later."
+  	    r.Enqueue workflowSid: ENV['TWILIO_WORKFLOW_SID'] do |e|
+          e.Task "{\"area\": \"#{area}\"}"
+        end
   	  end
-  	elsif ['1'].include?(params['Digits'])
-  	  response = Twilio::TwiML::Response.new do |r|
-  	    p "Sales"
-  	    p current_sales_number
-  	    r.Dial current_sales_number
-  	    r.Say "Sorry, your call could not be answered at this time. Please try again later."
-  	  end
+  	elsif digits == '1'
+      if within_office_hours?
+        area = "Operations"
+    	  response = Twilio::TwiML::Response.new do |r|
+    	    r.Enqueue workflowSid: ENV['TWILIO_WORKFLOW_SID'] do |e|
+            e.Task "{\"area\": \"#{area}\"}"
+          end
+    	  end
+      end
 
-  	elsif params['Digits'] == '9'
+  	elsif digits == '9'
   	  if verified_sender?(params["From"])
   	    response = Twilio::TwiML::Response.new do |r|
-  	      r.Gather :numDigits => '1', :action => voice_change_path, :method => 'post' do |g|
-  	        g.Say "Support number is #{current_support_number.gsub(/.{1}(?=.)/, '\0 ')}. To change press 1."
-  	        g.Say "Sales number is #{current_sales_number.gsub(/.{1}(?=.)/, '\0 ')}. To change press 2."
-  	        end
+  	      r.Say "This menu is not set up yet"
   	    end
       else
         response = Twilio::TwiML::Response.new do |r|
@@ -73,7 +73,7 @@ class TwilioController < ApplicationController
 
 
   def voice_change
-  	redirect_to '/voice_receive' unless ['1', '2'].include?(params['Digits'])
+  	redirect_to 'twilio/voice_receive' unless ['1', '2'].include?(params['Digits'])
   	if params['Digits'] == '1'
   	  response = Twilio::TwiML::Response.new do |r|
   	    r.Gather :numDigits => '1', :action => support_change_path, :method => 'post' do |g|

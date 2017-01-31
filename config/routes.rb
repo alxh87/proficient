@@ -30,13 +30,21 @@ Rails.application.routes.draw do
   end
   
   get 'twilio/index' => 'callforward#index', as: 'callforward_index'
-  post 'twilio/voice_receive' => 'twilio#voice_receive'
+  get 'twilio/voice_receive' => 'twilio#voice_receive'
   match 'twilio/voice_menu' => 'twilio#voice_menu', via: [:get, :post], as: 'voice_menu'
   match 'twilio/voice_change' => 'twilio#voice_change', via: [:get, :post], as: 'voice_change'
   match 'twilio/voice_change/support' => 'twilio#voice_change_support', via: [:get, :post], as: 'support_change'
   match 'twilio/voice_change/sales' => 'twilio#voice_change_sales', via: [:get, :post], as: 'sales_change'
   post 'callforward/set_active_number' => 'callforward#set_active_number'
   post 'office_hours/set_office_hours' => 'office_hours#set_office_hours'
+
+  get 'missed_calls/index' => 'missed_calls#index'
+
+  post 'call/enqueue'     => 'call#enqueue'
+  get  'call/incoming'    => 'call#incoming'
+  post 'assignment'       => 'callback#assignment'
+  post 'events'           => 'callback#events'
+  get  'message/incoming' => 'message#incoming'
   
 
   # Example resource route with options:
