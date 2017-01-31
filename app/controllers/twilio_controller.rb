@@ -154,28 +154,26 @@ class TwilioController < ApplicationController
 
   def verified_sender?(sender)
     nums=SupportNumber.pluck(:number)|SalesNumber.pluck(:number)
-    nums<<'+61405454187'
-    nums<<'+61407027118'
-    nums<<'+61421792096'
+    nums<<'+61405454187'  #alex
+    nums<<'+61407027118'  #juarez
+    nums<<'+61421792096'  #jordan
     nums.include?(sender)
-    #0407027118 juarez
-    #0421792096 jordan
   end
 
   def startday
-    ActiveNumber.find(3).number
+    OfficeHour.find(1).number
   end
 
   def endday
-    ActiveNumber.find(4).number
+    OfficeHour.find(2).number
   end
 
   def starttime
-    ActiveNumber.find(5).number
+    OfficeHour.find(3).number
   end
 
   def endtime
-    ActiveNumber.find(6).number
+    OfficeHour.find(4).number
   end
 
 

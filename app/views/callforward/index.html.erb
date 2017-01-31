@@ -16,13 +16,18 @@
       </thead>
 
       <tbody>
-        <% @active_numbers.each do |active_number| %>
+
         <tr>
-          <td><%= active_number.area.capitalize %></td>
-          <td><%= active_number.name %></td>
-          <td><%= active_number.number %></td>
+          <td><%= @active_numbers[0].area.capitalize %></td>
+          <td><%= @active_numbers[0].name %></td>
+          <td><%= @active_numbers[0].number %></td>
         </tr>
-        <% end %>
+        <tr>
+          <td><%= @active_numbers[1].area.capitalize %></td>
+          <td><%= @active_numbers[1].name %></td>
+          <td><%= @active_numbers[1].number %></td>
+        </tr>
+
       </tbody>
     </table>
   </div>
@@ -51,7 +56,7 @@
           <td><%= support_number.name %></td>
           <td><%= support_number.number %></td>
           <td><%= link_to 'Edit', edit_support_number_path(support_number) %></td>
-          <td><%= link_to 'Delete', support_number, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+          <td><%= link_to 'Delete', support_number, method: :delete, data: { confirm: "Are you sure you want to delete #{support_number.name.capitalize} (#{support_number.number})?" } %></td>
           <td><%= radio_button_tag(:support_index, i, support_number.number==@current_support_number) %></td>
         </tr>
         <% end %>
@@ -90,7 +95,7 @@
           <td><%= sales_number.name %></td>
           <td><%= sales_number.number %></td>
           <td><%= link_to 'Edit', edit_sales_number_path(sales_number) %></td>
-          <td><%= link_to 'Delete', sales_number, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+          <td><%= link_to 'Delete', sales_number, method: :delete, data: { confirm: "Are you sure you want to delete #{sales_number.name.capitalize} (#{sales_number.number})?" } %></td>
           <td><%= radio_button_tag(:sales_index, i, sales_number.number==@current_sales_number) %></td>
         </tr>
         <% end %>

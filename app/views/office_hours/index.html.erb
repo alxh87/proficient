@@ -3,17 +3,34 @@
 <p>This is used to configure the times that customer calls are forwarded to the office. Outside of these hours, customers will able to leave a voicemail.</p>
 
 
-<%= form_tag("/office_hours/set_office_hours", method: "post") do %>
-	<h3>Start day</h3>
-	<%= select_tag(:startday, options_for_select([['Sunday', 0], ['Monday', 1], ['Tuesday', 2], ['Wednesday', 3], ['Thursday', 4], ['Friday', 5], ['Saturday', 6]], @startday)) %>
-	<h3>End day</h3>
-	<%= select_tag(:endday, options_for_select([['Sunday', 0], ['Monday', 1], ['Tuesday', 2], ['Wednesday', 3], ['Thursday', 4], ['Friday', 5], ['Saturday', 6]], @endday)) %>
-	<h3>Opening time</h3>
-	<%= select_tag(:starttime, options_for_select((6..22), @starttime)) %>
-	<h3>Closing time</h3>
-	<%= select_tag(:endtime, options_for_select((6..22), @endtime)) %>
-sdaf
-	<input type="submit" value="Change Office Hours" class="btn btn-success"/>
-<% end %>
+<div class="container">
+  <div class="col-sm-6">
+
+		<%= form_tag("/office_hours/set_office_hours", method: "post") do %>
+			
+		  <table class="table table-hover table-striped">
+			  <tbody>
+						<tr>
+							<td>Start day</td>
+							<td><%= select_tag(:startday, options_for_select([['Sunday', 0], ['Monday', 1], ['Tuesday', 2], ['Wednesday', 3], ['Thursday', 4], ['Friday', 5], ['Saturday', 6]], @startday)) %></td>
+						</tr>
+						<tr>
+							<td>End day</td>
+							<td><%= select_tag(:endday, options_for_select([['Sunday', 0], ['Monday', 1], ['Tuesday', 2], ['Wednesday', 3], ['Thursday', 4], ['Friday', 5], ['Saturday', 6]], @endday)) %></td>
+						</tr>
+						<tr>
+							<td>Opening time</td>
+							<td><%= select_tag(:starttime, options_for_select((6..22), @starttime)) %></td>
+						</tr>
+						<tr>
+							<td>Closing time</td>
+							<td><%= select_tag(:endtime, options_for_select((6..22), @endtime)) %></td>
+						</tr>
+			  </tbody>
+			</table>
+			<input type="submit" value="Change Office Hours" class="btn btn-success"/>
+		<% end %>
 
 
+	</div>
+</div>

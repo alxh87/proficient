@@ -43,7 +43,7 @@ class SalesNumbersController < ApplicationController
   # DELETE /sales_numbers/1
   def destroy
     @sales_number.destroy
-    redirect_to callforward_index_path, notice: 'Sales number was successfully destroyed.'
+    redirect_to callforward_index_path, notice: 'Sales number was successfully deleted.'
   end
 
   private
