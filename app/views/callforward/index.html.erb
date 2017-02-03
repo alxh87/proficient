@@ -1,13 +1,58 @@
-<h1>Forwarding Numbers</h1>
+<h1>Twilio Workers</h1>
+<div class="container">
+  <div class="col-sm-6">
+    <tbody>
+      <table class="table table-hover table-striped">
+        <thead>
+          <tr>
+            <th class="col-sm-2">Name</th>
+            <th class="col-sm-6">Number</th>
+            <th class="col-sm-6">Status</th>
+            <th class="col-sm-6">Change Status</th>
+            <th class="col-sm-1">Sales</th>
+            <th class="col-sm-1">Support</th>
+            <th class="col-sm-2"></th>
+            <th class="col-sm-1"></th>
+          </tr>
+        </thead>
+        
+        <% @workers.each do |worker| %>
+          <%= form_tag("/workers/update", method: "post") do %>
+            <%= hidden_field_tag(:sid, worker[0][:sid]) %>
+            <tr>
+              <td><%= text_field_tag(:name, worker[0][:name]) %></td>
+              <td><%= text_field_tag(:number, worker[0][:number]) %></td>
+              <td><%= label_tag(:activity, worker[0][:activity]) %></td>
+              <td><%= select_tag(:online, options_for_select([['Online', 1], ['Offline', 2]], worker[0][:online]) )%></td>
+              <td><%= check_box_tag("sales", value = "1", checked = (worker[0][:area].include? "Sales") ) %></td>
+              <td><%= check_box_tag("operations", value = "1", checked = (worker[0][:area].include? "Operations") ) %></td>
+              <td><%= submit_tag "Update", class: "btn btn-success btn-sm" %></td>
+          <% end %> 
+          <%= form_tag("/workers/delete", method: "post") do %>
+              <%= hidden_field_tag(:sid, worker[0][:sid]) %>
+              <%= hidden_field_tag(:name, worker[0][:name]) %>
+              <td><%= submit_tag "Delete", class: "btn btn-warning btn-sm" %></td>
+          <% end %> 
+            </tr>
+        <% end %>
+      </tbody>
+    </table>
+    <br>
+  </div>
+</div>
 
-<p id="notice"><%= notice %></p>
-
-<% @workers.each do |worker| %>
-    <%=  worker[0][:name] %>
-    <%= worker[0][:number] %>
-    <%= worker[0][:area] %>
-        <br>
-<%end %>
+<h3>Create New Worker</h3>
+<%= form_tag("/workers/new", method: "post") do %>
+  <%= label_tag(:q, "Name:") %>
+  <%= text_field_tag(:name) %>
+  <%= label_tag(:q, "Number:") %>
+  <%= text_field_tag(:number) %>
+  <%= check_box_tag(:sales) %>
+  <%= label_tag(:sales) %>
+  <%= check_box_tag(:operations) %>
+  <%= label_tag(:operations) %>
+  <%= submit_tag("create") %>
+<% end %>
 
 <h2>Active Numbers</h2>
 <div class="container">

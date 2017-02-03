@@ -13,8 +13,11 @@ class CallforwardController < ApplicationController
     @workers=[]
     wsclient.workspace.workers.list.each do |client|
       ws_json = JSON.parse(client.attributes)
-      @workers << [:name => client.friendly_name, :number => ws_json["contact_uri"], :area => ws_json["area"]]
+      online = 1 unless client.activity_name == "Offline"
+      @workers << [:name => client.friendly_name, :number => ws_json["contact_uri"], :area => ws_json["area"], :sid => client.sid,  :available => client.available,  :activity => client.activity_name, :online => online ]
+    
     end
+    
   end
 
   def set_active_number

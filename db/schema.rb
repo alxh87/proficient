@@ -41,6 +41,13 @@ ActiveRecord::Schema.define(version: 20170104042407) do
     t.datetime "updated_at"
   end
 
+  create_table "missed_calls", force: :cascade do |t|
+    t.string   "selected_product"
+    t.string   "phone_number"
+    t.datetime "created_at",       null: false
+    t.datetime "updated_at",       null: false
+  end
+
   create_table "office_hours", force: :cascade do |t|
     t.string   "name"
     t.string   "number"

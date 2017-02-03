@@ -7,28 +7,21 @@ class TwilioController < ApplicationController
   skip_before_action :verify_authenticity_token
 
   def voice_receive
-  	
+    
+  	if within_office_hours?
       response = Twilio::TwiML::Response.new do |r|
     	  r.Gather :numDigits => '1', :action => voice_menu_path, :method => 'get' do |g|
     	    g.Play 'https://www.dropbox.com/s/cc4xdm963tgxu85/Proficient_voice_vinoo.mp3?dl=1'
     	  end
     	end
-    elsif verified_sender?(params["From"])
-      response = Twilio::TwiML::Response.new do |r|
-        r.Gather :numDigits => '1', :action => voice_menu_path, :method => 'get' do |g|
-          r.Say "Sorry, our office hours are Monday to Friday, 9 A M to 5 P M."
+      if verified_sender?(params["From"])
+        response = Twilio::TwiML::Response.new do |r|
+          r.Gather :numDigits => '1', :action => voice_menu_path, :method => 'get' do |g|
+            r.Say "Sorry, our office hours are Monday to Friday, 9 A M to 5 P M."
+          end
         end
       end
-    else
-      response = Twilio::TwiML::Response.new do |r|
-        if endtime.to_i > 12
-          r.Say "Sorry, our office hours are Monday to Friday, #{starttime} A M to #{(endtime.to_i - 12).to_s} P M.... Please leave a message."
-        else
-          r.Say "Sorry, our office hours are Monday to Friday, #{starttime} A M to #{endtime} P M.... Please leave a message."
-        end
-        r.Record maxLength: '20', transcribe: true, transcribeCallback: "http://twimlets.com/voicemail?Email=alxh87@gmail.com"      
-      end 
-
+    end
     render_twiml response
   end
 
@@ -44,12 +37,22 @@ class TwilioController < ApplicationController
   	  end
   	elsif digits == '1'
       if within_office_hours?
-        area = "Operations"
+        area = "Sales"
     	  response = Twilio::TwiML::Response.new do |r|
+          byebug
     	    r.Enqueue workflowSid: ENV['TWILIO_WORKFLOW_SID'] do |e|
             e.Task "{\"area\": \"#{area}\"}"
           end
     	  end
+      else
+        response = Twilio::TwiML::Response.new do |r|
+          if endtime.to_i > 12
+            r.Say "Sorry, our office hours are Monday to Friday, #{starttime} A M to #{(endtime.to_i - 12).to_s} P M.... Please leave a message."
+          else
+            r.Say "Sorry, our office hours are Monday to Friday, #{starttime} A M to #{endtime} P M.... Please leave a message."
+          end
+          r.Record maxLength: '20', transcribe: true, transcribeCallback: "http://twimlets.com/voicemail?Email=alxh87@gmail.com"      
+        end 
       end
 
   	elsif digits == '9'
