@@ -9,8 +9,8 @@ SupportNumber.create!([
   {name: "Juarez", number: "+61407027118"}
 ])
 OfficeHour.create!([
-  {name: "startday", number: "1"},
-  {name: "endday", number: "5"},
-  {name: "starttime", number: "9"},
-  {name: "endtime", number: "18"}
+  {id: 1, name: "startday", number: "1"},
+  {id: 2, name: "endday", number: "5"},
+  {id: 3, name: "starttime", number: "9"},
+  {id: 4, name: "endtime", number: "18"}
 ])

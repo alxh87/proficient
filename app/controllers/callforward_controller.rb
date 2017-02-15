@@ -3,11 +3,22 @@ class CallforwardController < ApplicationController
   before_action :require_login
   
   def index
-  	@sales_numbers = sales_number_list
-  	@support_numbers = support_number_list
-  	@active_numbers = active_number_list
-    @current_support_number = current_support_number
-    @current_sales_number = current_sales_number
+  	# @sales_numbers = sales_number_list
+  	# @support_numbers = support_number_list
+  	# @active_numbers = active_number_list
+   #  @current_support_number = current_support_number
+   #  @current_sales_number = current_sales_number
+    
+    wsclient = client
+
+    @workers=[]
+    wsclient.workspace.workers.list.each do |client|
+      ws_json = JSON.parse(client.attributes)
+      online = 1 unless client.activity_name == "Offline"
+      @workers << [:name => client.friendly_name, :number => ws_json["contact_uri"], :area => ws_json["area"], :sid => client.sid,  :available => client.available,  :activity => client.activity_name, :online => online ]
+    
+    end
+    
   end
 
   def set_active_number
@@ -43,5 +54,12 @@ class CallforwardController < ApplicationController
     ActiveNumber.find(2).number
   end
 
+  def client
+    Twilio::REST::TaskRouterClient.new(
+      ENV['TWILIO_ACCOUNT_SID'],
+      ENV['TWILIO_AUTH_TOKEN'],
+      ENV['TWILIO_WS_SID']
+    )
+  end
 
 end

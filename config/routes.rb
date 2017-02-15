@@ -37,7 +37,17 @@ Rails.application.routes.draw do
   match 'twilio/voice_change/sales' => 'twilio#voice_change_sales', via: [:get, :post], as: 'sales_change'
   post 'callforward/set_active_number' => 'callforward#set_active_number'
   post 'office_hours/set_office_hours' => 'office_hours#set_office_hours'
-  
+
+  get 'missed_calls/index' => 'missed_calls#index'
+
+  post 'call/enqueue'     => 'call#enqueue'
+  get  'call/incoming'    => 'call#incoming'
+  post 'assignment'       => 'callback#assignment'
+  post 'events'           => 'callback#events'
+  get  'message/incoming' => 'message#incoming'
+  post 'workers/new'      => 'worker#new'
+  post 'workers/update'   => 'worker#update'
+  post 'workers/delete'   => 'worker#delete'
 
   # Example resource route with options:
   #   resources :products do
