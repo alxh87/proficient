@@ -3,11 +3,12 @@ class CallforwardController < ApplicationController
   before_action :require_login
   
   def index
-  	@sales_numbers = sales_number_list
-  	@support_numbers = support_number_list
-  	@active_numbers = active_number_list
-    @current_support_number = current_support_number
-    @current_sales_number = current_sales_number
+  	# @sales_numbers = sales_number_list
+  	# @support_numbers = support_number_list
+  	# @active_numbers = active_number_list
+   #  @current_support_number = current_support_number
+   #  @current_sales_number = current_sales_number
+    
     wsclient = client
 
     @workers=[]
