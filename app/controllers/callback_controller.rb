@@ -13,7 +13,7 @@ class CallbackController < ApplicationController
 
   def events
     event_type = params[:EventType]
-
+    
     if ['workflow.timeout', 'task.canceled'].include?(event_type)
       task_attributes = JSON.parse(params[:TaskAttributes])
 

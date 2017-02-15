@@ -33,9 +33,10 @@ class TwilioController < ApplicationController
     	if digits == '2'
         # p '2222'
         area = "Operations"
+        p area
     	  response = Twilio::TwiML::Response.new do |r|
     	    r.Enqueue workflowSid: ENV['TWILIO_WORKFLOW_SID'] do |e|
-            e.Task "{\"area\": \"#{area}\"}"
+            e.Task "{\"selected_area\": \"#{area}\"}"
           end
     	  end
     	elsif digits == '1'
@@ -43,13 +44,13 @@ class TwilioController < ApplicationController
         if within_office_hours?
           # p "withinoffice"
           area = "Sales"
+          p area
           # p '==========='
           # p ENV['TWILIO_WORKFLOW_SID']
           # p'+++++++++++++'
       	  response = Twilio::TwiML::Response.new do |r|
       	    r.Enqueue workflowSid: ENV['TWILIO_WORKFLOW_SID'] do |e|
-              p 'ENSQUER'
-              e.Task "{\"area\": \"#{area}\"}"
+              e.Task "{\"selected_area\": \"#{area}\"}"
             end
       	  end
         else
