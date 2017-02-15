@@ -2,6 +2,7 @@ class CallbackController < ApplicationController
   skip_before_filter :verify_authenticity_token
 
   def assignment
+    p "AASSASOANSASNAOSNAOJDNSDA"
     instruction = {
       instruction: 'dequeue',
       post_work_activity_sid: ENV['TWILIO_IDLE_SID']

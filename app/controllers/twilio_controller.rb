@@ -14,21 +14,23 @@ class TwilioController < ApplicationController
     	    g.Play 'https://www.dropbox.com/s/cc4xdm963tgxu85/Proficient_voice_vinoo.mp3?dl=1'
     	  end
     	end
-      if verified_sender?(params["From"])
-        response = Twilio::TwiML::Response.new do |r|
-          r.Gather :numDigits => '1', :action => voice_menu_path, :method => 'get' do |g|
-            r.Say "Sorry, our office hours are Monday to Friday, 9 A M to 5 P M."
-          end
-        end
-      end
-    end
+      # if verified_sender?(params["From"])
+      #   response = Twilio::TwiML::Response.new do |r|
+      #     r.Gather :numDigits => '1', :action => voice_menu_path, :method => 'get' do |g|
+      #       r.Say "Sorry, our office hours are Monday to Friday, 9 A M to 5 P M."
+      #     end
+      #   end
+      # end
+    end.to_xml
     render_twiml response
   end
 
   def voice_menu
+    p params
   	redirect_to 'twilio/voice_receive' unless ['1', '2'].include?(params['Digits'])
     digits = params[:Digits]
   	if digits == '2'
+      p '2222'
       area = "Operations"
   	  response = Twilio::TwiML::Response.new do |r|
   	    r.Enqueue workflowSid: ENV['TWILIO_WORKFLOW_SID'] do |e|
@@ -36,11 +38,16 @@ class TwilioController < ApplicationController
         end
   	  end
   	elsif digits == '1'
+      p '1111'
       if within_office_hours?
+        p "withinoffice"
         area = "Sales"
+        p '==========='
+        p ENV['TWILIO_WORKFLOW_SID']
+        p'+++++++++++++'
     	  response = Twilio::TwiML::Response.new do |r|
-          byebug
     	    r.Enqueue workflowSid: ENV['TWILIO_WORKFLOW_SID'] do |e|
+            p 'ENSQUER'
             e.Task "{\"area\": \"#{area}\"}"
           end
     	  end
