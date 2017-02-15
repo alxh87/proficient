@@ -27,58 +27,62 @@ class TwilioController < ApplicationController
 
   def voice_menu
     p params
-  	redirect_to 'twilio/voice_receive' unless ['1', '2'].include?(params['Digits'])
-    digits = params[:Digits]
-  	if digits == '2'
-      p '2222'
-      area = "Operations"
-  	  response = Twilio::TwiML::Response.new do |r|
-  	    r.Enqueue workflowSid: ENV['TWILIO_WORKFLOW_SID'] do |e|
-          e.Task "{\"area\": \"#{area}\"}"
-        end
-  	  end
-  	elsif digits == '1'
-      p '1111'
-      if within_office_hours?
-        p "withinoffice"
-        area = "Sales"
-        p '==========='
-        p ENV['TWILIO_WORKFLOW_SID']
-        p'+++++++++++++'
+    if ['1', '2'].include?(params['Digits'])
+  	# redirect_to twilio_voice_receive_path unless ['1', '2'].include?(params['Digits'])
+      digits = params[:Digits]
+    	if digits == '2'
+        p '2222'
+        area = "Operations"
     	  response = Twilio::TwiML::Response.new do |r|
     	    r.Enqueue workflowSid: ENV['TWILIO_WORKFLOW_SID'] do |e|
-            p 'ENSQUER'
             e.Task "{\"area\": \"#{area}\"}"
+          end
+    	  end
+    	elsif digits == '1'
+        p '1111'
+        if within_office_hours?
+          p "withinoffice"
+          area = "Sales"
+          p '==========='
+          p ENV['TWILIO_WORKFLOW_SID']
+          p'+++++++++++++'
+      	  response = Twilio::TwiML::Response.new do |r|
+      	    r.Enqueue workflowSid: ENV['TWILIO_WORKFLOW_SID'] do |e|
+              p 'ENSQUER'
+              e.Task "{\"area\": \"#{area}\"}"
+            end
+      	  end
+        else
+          response = Twilio::TwiML::Response.new do |r|
+            if endtime.to_i > 12
+              r.Say "Sorry, our office hours are Monday to Friday, #{starttime} A M to #{(endtime.to_i - 12).to_s} P M.... Please leave a message."
+            else
+              r.Say "Sorry, our office hours are Monday to Friday, #{starttime} A M to #{endtime} P M.... Please leave a message."
+            end
+            r.Record maxLength: '20', transcribe: true, transcribeCallback: "http://twimlets.com/voicemail?Email=alxh87@gmail.com"      
+          end 
+        end
+
+    	elsif digits == '9'
+    	  if verified_sender?(params["From"])
+    	    response = Twilio::TwiML::Response.new do |r|
+    	      r.Say "This menu is not set up yet"
+    	    end
+        else
+          response = Twilio::TwiML::Response.new do |r|
+            r.Say "Sorry, please check the specified number."
           end
     	  end
       else
         response = Twilio::TwiML::Response.new do |r|
-          if endtime.to_i > 12
-            r.Say "Sorry, our office hours are Monday to Friday, #{starttime} A M to #{(endtime.to_i - 12).to_s} P M.... Please leave a message."
-          else
-            r.Say "Sorry, our office hours are Monday to Friday, #{starttime} A M to #{endtime} P M.... Please leave a message."
-          end
-          r.Record maxLength: '20', transcribe: true, transcribeCallback: "http://twimlets.com/voicemail?Email=alxh87@gmail.com"      
-        end 
-      end
-
-  	elsif digits == '9'
-  	  if verified_sender?(params["From"])
-  	    response = Twilio::TwiML::Response.new do |r|
-  	      r.Say "This menu is not set up yet"
-  	    end
-      else
-        response = Twilio::TwiML::Response.new do |r|
           r.Say "Sorry, please check the specified number."
         end
-  	  end
+    	end
+    	# byebug
+    	render_twiml response
     else
-      response = Twilio::TwiML::Response.new do |r|
-        r.Say "Sorry, please check the specified number."
-      end
-  	end
-  	# byebug
-  	render_twiml response
+        return redirect_to twilio_voice_receive_path
+    end
   end
 
 
