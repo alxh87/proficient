@@ -8,7 +8,7 @@ class TwilioController < ApplicationController
 
   def voice_receive
     
-  	if within_office_hours?
+
       response = Twilio::TwiML::Response.new do |r|
     	  r.Gather :numDigits => '1', :action => voice_menu_path, :method => 'get' do |g|
     	    g.Play 'https://www.dropbox.com/s/cc4xdm963tgxu85/Proficient_voice_vinoo.mp3?dl=1'
@@ -21,7 +21,7 @@ class TwilioController < ApplicationController
       #     end
       #   end
       # end
-    end.to_xml
+
     render_twiml response
   end
 
@@ -40,6 +40,7 @@ class TwilioController < ApplicationController
           end
     	  end
     	elsif digits == '1'
+        # lead = Lead.create(lead_params)
         p '1111'
         if within_office_hours?
           # p "withinoffice"
@@ -183,6 +184,21 @@ class TwilioController < ApplicationController
 
   def within_office_hours?
     (startday.to_i..endday.to_i).cover?(Time.now.wday)&(starttime.to_i..endtime.to_i).cover?(Time.now.hour)   #monday(1)-friday(5) AND 9:00-16:59
+  end
+
+  def lead_params
+    {
+      lead_source: lead_source,
+      phone_number: params[:Caller],
+      city: params[:FromCity],
+      state: params[:FromState],
+      customer_number: params[:From]
+    }
+  end
+
+  def lead_source
+    incoming_number = GlobalPhone.parse(params[:Called]).country_code+GlobalPhone.parse(params[:Called]).national_string
+    LeadSource.find_by_incoming_number(incoming_number)
   end
 
 

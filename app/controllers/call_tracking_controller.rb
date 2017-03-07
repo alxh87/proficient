@@ -4,7 +4,8 @@ class CallTrackingController < ApplicationController
 
   def forward_call
     lead = Lead.create(lead_params)
-    render text: twilio_response.text
+     redirect_to twilio_voice_receive_path
+    # render text: twilio_response.text
   end
 
   private
@@ -23,7 +24,7 @@ class CallTrackingController < ApplicationController
       phone_number: params[:Caller],
       city: params[:FromCity],
       state: params[:FromState],
-      customer_number: params[:From]
+      # customer_number: params[:From]
     }
   end
 

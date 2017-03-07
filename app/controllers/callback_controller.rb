@@ -12,9 +12,24 @@ class CallbackController < ApplicationController
   end
 
   def events
+    task_attributes = JSON.parse(params[:TaskAttributes]) if params[:TaskAttributes]
     event_type = params[:EventType]
-    
+    p '====='
+    task_sid = params[:TaskSid]
+
     if ['workflow.timeout', 'task.canceled'].include?(event_type)
+
+      # reservation = wsclient.workspace.tasks.get(task_sid).reservations.list.each do |reservation|
+      #   puts reservation.reservation_status
+      #   puts reservation.worker_name
+      # end
+
+      p worker_call_sid = task_attributes['worker_call_sid']
+      @call = client.account.calls.get(worker_call_sid)
+      p '---.---.-'
+      @call.update(:status => "completed")
+      p @call.status
+
       task_attributes = JSON.parse(params[:TaskAttributes])
 
       MissedCall.create(
@@ -23,15 +38,32 @@ class CallbackController < ApplicationController
       )
 
       redirect_to_voicemail(task_attributes['call_sid']) if event_type == 'workflow.timeout'
+    
+    # elsif event_type == 'reservation.accepted' 
+    #   reservation = client.workspace.tasks.get(task_sid).reservations.list.each do |reservation|
+    #     puts reservation.reservation_status
+    #     puts reservation.worker_name
+    #   end
+
     elsif event_type == 'worker.activity.update' &&
           params[:WorkerActivityName] == 'Offline'
 
       worker_attributes = JSON.parse(params[:WorkerAttributes])
       notify_offline_status(worker_attributes['contact_uri'])
+
+    elsif event_type == 'reservation.accepted' 
+      p '++++++++++++++++++'
+      p worker_call_sid = task_attributes['call_sid']
+      @call = client.account.calls.get(worker_call_sid)
+      p '---.---.-'
+      # @call.update(:status => "completed")
+      p @call.status
+
     end
 
     render nothing: true
   end
+
 
   private
 
@@ -58,5 +90,14 @@ class CallbackController < ApplicationController
 
   def client
     Twilio::REST::Client.new(ENV['TWILIO_ACCOUNT_SID'], ENV['TWILIO_AUTH_TOKEN'])
+  end
+
+  def wsclient
+    Twilio::REST::TaskRouterClient.new(
+      ENV['TWILIO_ACCOUNT_SID'],
+      ENV['TWILIO_AUTH_TOKEN'],
+      ENV['TWILIO_WS_SID']
+    )
+
   end
 end

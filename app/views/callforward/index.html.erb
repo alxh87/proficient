@@ -26,12 +26,12 @@
               <td><%= select_tag(:online, options_for_select([['Online', 1], ['Offline', 2]], worker[0][:online]) )%></td>
               <td><%= check_box_tag("sales", value = "1", checked = (worker[0][:area].include? "Sales") ) %></td>
               <td><%= check_box_tag("operations", value = "1", checked = (worker[0][:area].include? "Operations") ) %></td>
-              <td><%= submit_tag "Update", class: "btn btn-success btn-sm" %></td>
+              <td><%= submit_tag "Update" %></td>
           <% end %> 
           <%= form_tag("/workers/delete", method: "post") do %>
               <%= hidden_field_tag(:sid, worker[0][:sid]) %>
               <%= hidden_field_tag(:name, worker[0][:name]) %>
-              <td><%= submit_tag "Delete", class: "btn btn-warning btn-sm" %></td>
+              <td><%= submit_tag "Delete"%></td>
           <% end %> 
             </tr>
         <% end %>
