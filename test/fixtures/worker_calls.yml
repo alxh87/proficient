@@ -1,0 +1,9 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  callsid: MyString
+  workercallsid: MyString
+
+two:
+  callsid: MyString
+  workercallsid: MyString

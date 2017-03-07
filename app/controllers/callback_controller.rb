@@ -7,6 +7,12 @@ class CallbackController < ApplicationController
       instruction: 'dequeue',
       post_work_activity_sid: ENV['TWILIO_IDLE_SID']
     }
+    task_attributes = JSON.parse(params[:TaskAttributes]) if params[:TaskAttributes]
+    p "ASSIGNMENTWORKERSTART"
+    p task_attributes['worker_call_sid']
+    p "ASSIGNMENTWORKEREND"
+
+    WorkerCall.create(callsid: task_attributes['call_sid'], workercallsid: task_attributes['worker_call_sid'])
 
     render json: instruction
   end
@@ -30,6 +36,7 @@ class CallbackController < ApplicationController
       @call.update(:status => "completed")
       p @call.status
 
+      end_other_workers(task_attributes['call_sid'])
       task_attributes = JSON.parse(params[:TaskAttributes])
 
       MissedCall.create(
@@ -52,12 +59,13 @@ class CallbackController < ApplicationController
       notify_offline_status(worker_attributes['contact_uri'])
 
     elsif event_type == 'reservation.accepted' 
-      p '++++++++++++++++++'
-      p worker_call_sid = task_attributes['call_sid']
-      @call = client.account.calls.get(worker_call_sid)
-      p '---.---.-'
-      # @call.update(:status => "completed")
-      p @call.status
+      end_other_workers(task_attributes['call_sid'])
+        # p '++++++++++++++++++'
+        # p worker_call_sid = task_attributes['call_sid']
+        # @call = client.account.calls.get(worker_call_sid)
+        # p '---.---.-'
+        # # @call.update(:status => "completed")
+        # p @call.status
 
     end
 
@@ -98,6 +106,21 @@ class CallbackController < ApplicationController
       ENV['TWILIO_AUTH_TOKEN'],
       ENV['TWILIO_WS_SID']
     )
-
   end
+
+  def end_other_workers(callsid)
+    calls = WorkerCall.where(callsid: callsid)
+    if calls
+      calls.each do |call|
+        if call.workercallsid
+          workercall = client.account.calls.get(call.workercallsid)
+          puts "ending call" + call.workercallsid
+          workercall.update(:status => "completed")
+        end
+        # call.destroy
+      end
+    end
+  end
+
+
 end
