@@ -30,6 +30,8 @@ class CallbackController < ApplicationController
       #   puts reservation.worker_name
       # end
 
+      task_attributes = JSON.parse(params[:TaskAttributes])
+      
       p worker_call_sid = task_attributes['worker_call_sid']
       @call = client.account.calls.get(worker_call_sid)
       p '---.---.-'
@@ -37,7 +39,6 @@ class CallbackController < ApplicationController
       p @call.status
 
       end_other_workers(task_attributes['call_sid'])
-      task_attributes = JSON.parse(params[:TaskAttributes])
 
       MissedCall.create(
         selected_product: task_attributes['selected_product'],
@@ -60,6 +61,8 @@ class CallbackController < ApplicationController
 
     elsif event_type == 'reservation.accepted' 
       end_other_workers(task_attributes['call_sid'])
+
+
         # p '++++++++++++++++++'
         # p worker_call_sid = task_attributes['call_sid']
         # @call = client.account.calls.get(worker_call_sid)
@@ -108,19 +111,36 @@ class CallbackController < ApplicationController
     )
   end
 
-  def end_other_workers(callsid)
-    calls = WorkerCall.where(callsid: callsid)
-    if calls
-      calls.each do |call|
-        if call.workercallsid
-          workercall = client.account.calls.get(call.workercallsid)
-          puts "ending call" + call.workercallsid
-          workercall.update(:status => "completed")
-        end
-        # call.destroy
+
+  def end_other_workers(call_sid)
+    calls = WorkerCall.where(callsid: call_sid)
+    calls.each do |call|
+      if call.workercallsid
+        workercall = client.account.calls.get(call.workercallsid)
+        puts "ending call" + call.workercallsid
+        p workercall.status
+        workercall.update(:status => "completed")
+        p workercall.status
       end
+      call.destroy
     end
   end
+
+  # def end_other_workers(call_sid)
+  #   calls = WorkerCall.where(callsid: call_sid)
+  #   if calls
+  #     calls.each do |call|
+  #       if call.workercallsid
+  #         workercall = client.account.calls.get(call.workercallsid)
+  #         puts "ending call" + call.workercallsid
+  #         p workercall.status
+  #         workercall.update(:status => "completed")
+  #         p workercall.status
+  #       end
+  #       call.destroy
+  #     end
+  #   end
+  # end
 
 
 end

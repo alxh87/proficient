@@ -3,8 +3,8 @@ class CallTrackingController < ApplicationController
   
 
   def forward_call
-    lead = Lead.create(lead_params)
-     redirect_to twilio_voice_receive_path
+    Lead.create(lead_params)
+    redirect_to twilio_voice_receive_path
     # render text: twilio_response.text
   end
 
