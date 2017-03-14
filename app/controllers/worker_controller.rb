@@ -1,6 +1,6 @@
 class WorkerController < ApplicationController
 
-
+  before_action :require_login
 
 
   def new

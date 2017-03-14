@@ -15,11 +15,7 @@
                 <% @missed_calls.each do |call| %>
                     <tr>
                         <td class="col-md-4">
-                            <% if call.selected_product == 'ProgrammableVoice' %>
-                                <span>Programmable Voice</span>
-                            <% else %>
-                                <span>Programmable SMS</span>
-                            <% end %>
+                                <%= call.created_at %>
                         </td>
                         <td class="col-md-8">
                             <a href="tel:<%= call.phone_number %>">
@@ -27,6 +23,7 @@
                                 <%= call.phone_number %>
                             </a>
                         </td>
+
                     </tr>
                 <%end %>
             </tbody>
