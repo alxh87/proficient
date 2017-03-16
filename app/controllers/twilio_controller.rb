@@ -11,7 +11,7 @@ class TwilioController < ApplicationController
 
       response = Twilio::TwiML::Response.new do |r|
     	  r.Gather :numDigits => '1', :action => voice_menu_path, :method => 'get' do |g|
-    	    g.Play 'https://www.dropbox.com/s/cc4xdm963tgxu85/Proficient_voice_vinoo.mp3?dl=1'
+    	    g.Play 'https://www.dropbox.com/s/cmxrj3bf80meidc/vinoovoicetrim.mp3?dl=1'
     	  end
     	end
       # if verified_sender?(params["From"])
