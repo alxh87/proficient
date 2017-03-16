@@ -29,8 +29,15 @@ class CallTrackingController < ApplicationController
   end
 
   def lead_source
-    incoming_number = GlobalPhone.parse(params[:Called]).country_code+GlobalPhone.parse(params[:Called]).national_string
-    LeadSource.find_by_incoming_number(incoming_number)
+    called_number = GlobalPhone.parse(params[:Called]).country_code+GlobalPhone.parse(params[:Called]).national_string
+    source = LeadSource.find_by_incoming_number(called_number)
+
+    unless source
+      LeadSource.create(incoming_number: called_number)
+      source = LeadSource.find_by_incoming_number(called_number)
+    end
+
+    return source
   end
 
   def current_sales_number
