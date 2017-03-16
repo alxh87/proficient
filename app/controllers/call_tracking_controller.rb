@@ -33,7 +33,7 @@ class CallTrackingController < ApplicationController
     source = LeadSource.find_by_incoming_number(called_number)
 
     unless source
-      LeadSource.create(incoming_number: called_number)
+      LeadSource.create(incoming_number: called_number, name: "New Number")
       source = LeadSource.find_by_incoming_number(called_number)
     end
 
