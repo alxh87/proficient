@@ -55,6 +55,10 @@ class TwilioController < ApplicationController
             end
       	  end
         else
+          MissedCall.create(
+            selected_product: task_attributes['selected_product'],
+            phone_number: task_attributes['from']
+          )
           response = Twilio::TwiML::Response.new do |r|
             if endtime.to_i > 12
               r.Say "Sorry, our office hours are Monday to Friday, #{starttime} A M to #{(endtime.to_i - 12).to_s} P M.... Please leave a message."
