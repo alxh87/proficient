@@ -56,8 +56,8 @@ class TwilioController < ApplicationController
       	  end
         else
           MissedCall.create(
-            selected_product: task_attributes['selected_product'],
-            phone_number: task_attributes['from']
+            selected_product: 'Sales',
+            phone_number: params[:Caller]
           )
           response = Twilio::TwiML::Response.new do |r|
             if endtime.to_i > 12
